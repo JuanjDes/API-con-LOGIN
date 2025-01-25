@@ -25,9 +25,10 @@ app.use(
     })
   );
 
-  app.use('/',usersRoutes)//Ruta de usuarios
+
+app.use('/',usersRoutes)//Ruta de usuarios
 
 // escuchamos en puerto 3000
 app.listen(PORT, () => {
-    console.log('Servidor escuchando en el puerto 3000');
+    console.log(`Server listening on port http://localhost:${PORT}`)
 });

@@ -76,7 +76,8 @@ router.post('/login', (req, res) => {
       const user = users.find((u) => u.id === userId);
      
     if (user) {
-      res.send(
+        res.send('<h1>buscar</h1>')
+     /* res.send(
         ` <h1>Buscar personaje de Rick and Morty</h1>
           <form action="/process" method="POST">
             <input type="text" name="character" placeholder="Nombre del personaje" required>
@@ -84,28 +85,13 @@ router.post('/login', (req, res) => {
             <button type="submit" name="action" value="logout">Logout</button>
           </form>
        `
-      );
+      );*/
     } else {
       res.status(401).json({ message: 'Usuario no encontrado' });
     }
   });
 
-/*
-  // Procesar acciones de búsqueda o logout
-router.post('/process', (req, res) => {
-  const { action, character } = req.body;
 
-  if (action === 'search') {
-    if (!character || character.trim() === '') {
-      return res.send('Por favor, introduce un nombre de personaje.');
-    }
-    // Redirigir a la ruta del personaje
-    res.redirect(`/character/${encodeURIComponent(character)}`);
-  } else if (action === 'logout') {
-    // Manejar el logout
-     res.redirect('/logout');
-  }
-});*/
 
   //- POST /logout: Endpoint para cerrar sesión y destruir la sesión.
   router.post('/logout', (req, res) => {
@@ -119,4 +105,4 @@ router.post('/process', (req, res) => {
   });
   
 
-  module.exports={router};
+module.exports = router;
