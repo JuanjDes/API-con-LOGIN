@@ -3,6 +3,7 @@ const app = express();
 
 const PORT =3000;
 const usersRoutes=require('./routes/users.js')
+const characterRoutes =require('./routes/characters.js')
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const { jwtSecret } = require('./crypto/config'); // Asegúrate de importar un secreto seguro
@@ -27,6 +28,7 @@ app.use(
 
 
 app.use('/',usersRoutes)//Ruta de usuarios
+app.use('/character', characterRoutes); // Rutas de personajes
 
 // escuchamos en puerto 3000
 app.listen(PORT, () => {
