@@ -1,16 +1,20 @@
 const express = require('express');
 const axios=require('axios');
 const router = express.Router();
+ const url= `https://rickandmortyapi.com/api/character`
  
  // Obtener un personaje por nombre
- router.get('/characters/:name', async (req, res) => {
-    const { name } = req.params; // Obtener el nombre del personaje desde los parámetros de consulta
+ router.get('/:name', async (req, res) => {
+    const { name } = req.params; // nombre del personaje desde los parámetros de consulta
    
     if (!name) {
       return res.status(400).json({ message: 'Por favor, proporciona un nombre para buscar' });
     }
   
     try {
+
+    
+    
       const response = await axios.get(`${url}/?name=${encodeURIComponent(name)}`);
       const filteredCharacters = response.data.results 
 

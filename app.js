@@ -27,8 +27,9 @@ app.use(
   );
 
 
-app.use('/',usersRoutes)//Ruta de usuarios
+
 app.use('/character', characterRoutes); // Rutas de personajes
+app.use('/',usersRoutes)//Ruta de usuarios
 
 // escuchamos en puerto 3000
 app.listen(PORT, () => {

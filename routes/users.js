@@ -10,10 +10,10 @@ const { authenticateToken ,generateToken} = require('../middlewares/authMiddlewa
 
 //GET /: Página de inicio con formulario de inicio de sesión y enlace al panel de control.
 router.get('/', (req, res) => {
+  console.log(req.session.user)
       if (req.session.user) {
         // Si volvemos a esta ruta los inputs habrán desaparecido y habrá un enlace a /search  y un botón de logout para deslogarnos.
-        // <h1>Bienvenido, ${req.session.user.name}</h1>
-        res.send(`
+       res.send(`
           <h1>Bienvenido</h1>
           <div><a href="/search">Search</a></div>
            <div>
@@ -41,8 +41,6 @@ router.get('/', (req, res) => {
 
 
 
-  //4. Ruta de Inicio de Sesión
-
 //- Ruta que maneja la autenticación del usuario, genera un token y lo almacena en la sesión.
 //- POST /login: Endpoint para autenticar y generar un token JWT.
 router.post('/login', (req, res) => {
@@ -55,11 +53,10 @@ router.post('/login', (req, res) => {
     }
     const token = generateToken(user);
     req.session.token = token;
-    console.log(token)
-    req.session.user = {
+   /* req.session.user = {
       id: user.id,
       name: username,
-    };
+    };*/
    
     res.redirect('/search');
  
@@ -68,8 +65,7 @@ router.post('/login', (req, res) => {
 
 
   
-// router.get('/dashboard', authenticateToken, (req, res) => {
-  
+
   router.get('/search', authenticateToken,(req, res) => {
      
       const userId = req.user;
@@ -77,7 +73,7 @@ router.post('/login', (req, res) => {
      
     if (user) {
        res.send(
-        ` <h1>Buscar personaje de Rick and Morty</h1>
+        `<div><h1>Buscar personaje de Rick and Morty</h1></div>
           <form action="/process" method="POST">
             <input type="text" name="character" placeholder="Nombre del personaje" required>
             <button type="submit" name="action" value="search">Buscar</button>
@@ -91,6 +87,7 @@ router.post('/login', (req, res) => {
   });
 
 
+
   router.post('/process', (req, res) => {
     const { action, character } = req.body;
   
@@ -98,13 +95,15 @@ router.post('/login', (req, res) => {
       if (!character || character.trim() === '') {
         return res.send('Por favor, introduce un nombre de personaje.');
       }
-      // Redirigir a la ruta del personaje
+      // ruta del personaje
       res.redirect(`/character/${encodeURIComponent(character)}`);
+    
     } else if (action === 'logout') {
-      // Manejar el logout
+      // ruta del logout
        res.redirect('/logout');
     }
   })
+
 
   //- POST /logout: Endpoint para cerrar sesión y destruir la sesión.
   router.post('/logout', (req, res) => {
