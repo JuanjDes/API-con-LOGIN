@@ -1,19 +1,18 @@
 const express = require('express');
 const axios=require('axios');
 const router = express.Router();
- const url= `https://rickandmortyapi.com/api/character`
- 
+const url= `https://rickandmortyapi.com/api/character`
+
  // Obtener un personaje por nombre
- router.get('/:name', async (req, res) => {
-    const { name } = req.params; // nombre del personaje desde los parámetros de consulta
+ router.get('/character/:name', async (req, res) => {
+    const { name } = req.params; // Obtener el nombre del personaje desde los parámetros de consulta
    
     if (!name) {
       return res.status(400).json({ message: 'Por favor, proporciona un nombre para buscar' });
     }
   
     try {
-
-    
+  
     
       const response = await axios.get(`${url}/?name=${encodeURIComponent(name)}`);
       const filteredCharacters = response.data.results 
@@ -26,7 +25,7 @@ const router = express.Router();
           <title>rick and morty </title>
       </head>
       <body>
-          <h1>Rick and morty </h1>
+          <h1>Personajes de Rick and morty </h1>
           <ul>
            ${filteredCharacters.map((character) => 
             `<div>
@@ -46,6 +45,21 @@ const router = express.Router();
 
     } catch (error) {
         res.status(404).json ({error:'Error, personaje no econtrado'})
+    }
+  });
+  
+
+  router.get('/characters', async (req, res) => {
+     try {
+        
+      const response = await axios.get(url);
+      const characters = response.data.results 
+
+      res.json(characters);
+
+
+    } catch (error) {
+        res.status(500).json ({mensaje:'No se han podido traer los personajes de la api'})
     }
   });
   

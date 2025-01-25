@@ -8,14 +8,13 @@ const { authenticateToken ,generateToken} = require('../middlewares/authMiddlewa
  
 
 
-//GET /: Página de inicio con formulario de inicio de sesión y enlace al panel de control.
+//GET /: Página de inicio con formulario de inicio de sesión
 router.get('/', (req, res) => {
-  console.log(req.session.user)
-      if (req.session.user) {
+    if (req.session.user) {
         // Si volvemos a esta ruta los inputs habrán desaparecido y habrá un enlace a /search  y un botón de logout para deslogarnos.
-       res.send(`
-          <h1>Bienvenido</h1>
-          <div><a href="/search">Search</a></div>
+        res.send(`
+          <div><h1>Bienvenido, ${req.session.user}</h1></div>
+          <div><a href="/search">Buscar personaje</a></div>
            <div>
              <form action="/logout" method="POST" style="margin-top: 10px;">
              <button type="submit">Cerrar sesión</button>
@@ -25,7 +24,7 @@ router.get('/', (req, res) => {
       } else {
         // Si el usuario no está autenticado, mostrar formulario de login
         res.send(`
-          <h1>Inicio de Sesión</h1>
+         <div> <h1>Inicio de Sesión</h1></div>
           <form action="/login" method="post">
             <label for="username">Usuario:</label>
             <input type="text" id="username" name="username" required>
@@ -53,27 +52,23 @@ router.post('/login', (req, res) => {
     }
     const token = generateToken(user);
     req.session.token = token;
-   /* req.session.user = {
-      id: user.id,
-      name: username,
-    };*/
-   
-    res.redirect('/search');
+    req.session.user = username;
+    //al validarse el usuario volvemos a la ruta principal y nos mostrara un botón para salir y un link para acceder a la ruta de /search
+    res.redirect('/');
  
   
   });
 
 
   
-
   router.get('/search', authenticateToken,(req, res) => {
      
       const userId = req.user;
       const user = users.find((u) => u.id === userId);
      
     if (user) {
-       res.send(
-        `<div><h1>Buscar personaje de Rick and Morty</h1></div>
+      res.send(
+        ` <h1>Buscar personaje de Rick and Morty</h1>
           <form action="/process" method="POST">
             <input type="text" name="character" placeholder="Nombre del personaje" required>
             <button type="submit" name="action" value="search">Buscar</button>
@@ -87,23 +82,20 @@ router.post('/login', (req, res) => {
   });
 
 
-
   router.post('/process', (req, res) => {
     const { action, character } = req.body;
-  
     if (action === 'search') {
       if (!character || character.trim() === '') {
         return res.send('Por favor, introduce un nombre de personaje.');
       }
-      // ruta del personaje
+      // Redirigir a la ruta del personaje
       res.redirect(`/character/${encodeURIComponent(character)}`);
     
     } else if (action === 'logout') {
-      // ruta del logout
+      // Manejar el logout
        res.redirect('/logout');
     }
   })
-
 
   //- POST /logout: Endpoint para cerrar sesión y destruir la sesión.
   router.post('/logout', (req, res) => {
@@ -117,4 +109,5 @@ router.post('/login', (req, res) => {
   });
   
 
-module.exports = router;
+  
+  module.exports = router;

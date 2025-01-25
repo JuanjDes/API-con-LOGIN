@@ -1,12 +1,14 @@
-const express = require('express');
-const app = express();
+const express=require('express');
+const app=express();
 
 const PORT =3000;
-const usersRoutes=require('./routes/users.js')
+const usersRoutes=require('./routes/users')
 const characterRoutes =require('./routes/characters.js')
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const isAuthenticated=require('./middlewares/isAuthenticated.js')
 const { jwtSecret } = require('./crypto/config'); // Asegúrate de importar un secreto seguro
+
 
 
 // Middleware para manejar datos de formularios URL-encoded
@@ -28,10 +30,11 @@ app.use(
 
 
 
-app.use('/character', characterRoutes); // Rutas de personajes
 app.use('/',usersRoutes)//Ruta de usuarios
+app.use('/', isAuthenticated,characterRoutes); // Rutas de personajes
 
-// escuchamos en puerto 3000
-app.listen(PORT, () => {
+ 
+
+app.listen(PORT,()=>{
     console.log(`Server listening on port http://localhost:${PORT}`)
-});
+})
