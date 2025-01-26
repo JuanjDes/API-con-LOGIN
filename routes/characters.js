@@ -25,20 +25,26 @@ const url= `https://rickandmortyapi.com/api/character`
           <title>rick and morty </title>
       </head>
       <body>
-          <h1>Personajes de Rick and morty </h1>
-          <ul>
+        <center>
+          <div style = "background-color: #00ffbf">
+            <h1>Personajes de Rick and morty </h1>
+          </div>
+
+          <a href="/search">Volver a buscar personaje</a>
+          <br><br>
+          
            ${filteredCharacters.map((character) => 
-            `<div>
+            ` <div style = "border: 1px solid black; background-color: #ebf2f3; width: 400px; height: 500px; padding: 20px">
                 <img src="${character.image}"  alt="${character.name}">
-                <li>Nombre: ${character.name}</li>
-                <li>Status: ${character.status}</li>
-                <li>Species: ${character.species}</li>
-                <li>Origin: ${character.origin.name}</li>
-                </div>
+                <p>Nombre: ${character.name}</p>
+                <p>Status: ${character.status}</p>
+                <p>Species: ${character.species}</p>
+                <p>Origin: ${character.origin.name}</p>
+              </div>
              `
             ).join('')}
-          </ul>
-          </body>
+        </center>
+      </body>
       </html>`
     res.send(literal);
 
