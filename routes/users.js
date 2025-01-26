@@ -13,27 +13,32 @@ router.get('/', (req, res) => {
     if (req.session.user) {
         // Si volvemos a esta ruta los inputs habrán desaparecido y habrá un enlace a /search  y un botón de logout para deslogarnos.
         res.send(`
-          <div><h1>Bienvenido, ${req.session.user}</h1></div>
-          <div><a href="/search">Buscar personaje</a></div>
-           <div>
-             <form action="/logout" method="POST" style="margin-top: 10px;">
-             <button type="submit">Cerrar sesión</button>
-             </form>
-           </div>
+          <center>
+            <div><h1>Bienvenido, ${req.session.user}</h1></div>
+            <div><a href="/search">Buscar personaje</a></div>
+            <br><br><br>
+            <div>
+              <form action="/logout" method="POST" style="margin-top: 10px;">
+              <button type="submit">Cerrar sesión</button>
+              </form>
+            </div>
+           </center>
         `);
       } else {
         // Si el usuario no está autenticado, mostrar formulario de login
         res.send(`
-         <div> <h1>Inicio de Sesión</h1></div>
-          <form action="/login" method="post">
-            <label for="username">Usuario:</label>
-            <input type="text" id="username" name="username" required>
-            <br>
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
-            <button type="submit">Iniciar sesión</button>
-          </form>
+          <center>
+            <div> <h1>Inicio de Sesión</h1> </div>
+            <form action="/login" method="post">
+              <label for="username">Usuario ... :</label>
+              <input type="text" id="username" name="username" required>
+              <br><br>
+              <label for="password">Contraseña:</label>
+              <input type="password" id="password" name="password" required>
+              <br><br>
+              <button type="submit">Iniciar sesión</button>
+            </form>
+          </center>
         `);
       }
   });
@@ -68,12 +73,17 @@ router.post('/login', (req, res) => {
      
     if (user) {
       res.send(
-        ` <h1>Buscar personaje de Rick and Morty</h1>
-          <form action="/process" method="POST">
-            <input type="text" name="character" placeholder="Nombre del personaje" required>
-            <button type="submit" name="action" value="search">Buscar</button>
-            <button type="submit" name="action" value="logout">Logout</button>
-          </form>
+        ` <center>
+            <h1>Buscar personaje de Rick and Morty</h1>
+            <form action="/process" method="POST">
+              <input type="text" name="character" placeholder="Nombre del personaje" required>
+              <button type="submit" name="action" value="search">Buscar</button>
+            </form>
+
+            <form action="/logout" method="POST">
+              <button type="submit" name="action" value="logout">Logout</button>
+            </form>
+          </center>
        `
       );
     } else {
